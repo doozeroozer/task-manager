@@ -50,6 +50,17 @@ app.get('/api/tasks', (req, res) => {
   res.json(tasks);
 });
 
+app.put('/api/tasks/:id', (req, res) => {
+  const { id } = req.params;
+  const { description, due_date } = req.body;
+  const existing = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id);
+  if (!existing) return res.status(404).json({ error: 'Task not found' });
+  db.prepare('UPDATE tasks SET description = ?, due_date = ? WHERE id = ?')
+    .run(description?.trim() || null, due_date || null, id);
+  const task = db.prepare('SELECT * FROM tasks WHERE id = ?').get(id);
+  res.json(task);
+});
+
 app.post('/api/tasks', (req, res) => {
   const { title, description, due_date } = req.body;
   if (!title || !title.trim()) {

@@ -139,6 +139,101 @@ button[type="submit"]:hover {
   border-radius: 12px;
   padding: 1.25rem 1.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.task-card:hover {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+
+.task-card.editing {
+  cursor: default;
+}
+
+.task-card.editing:hover {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.edit-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  color: #1a1a2e;
+}
+
+.edit-form .form-group {
+  margin-bottom: 0.75rem;
+}
+
+.edit-form .form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+  color: #555;
+}
+
+.edit-form textarea,
+.edit-form input[type="date"] {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+}
+
+.edit-form textarea:focus,
+.edit-form input[type="date"]:focus {
+  outline: none;
+  border-color: #4a6cf7;
+  box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+}
+
+.edit-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.edit-row .form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-save, .btn-cancel {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.btn-save {
+  background: #4a6cf7;
+  color: #fff;
+}
+
+.btn-save:hover {
+  background: #3b5de7;
+}
+
+.btn-cancel {
+  background: #e8e8e8;
+  color: #555;
+}
+
+.btn-cancel:hover {
+  background: #ddd;
 }
 
 .task-card h3 {

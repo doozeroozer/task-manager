@@ -37,7 +37,7 @@ function renderTasks(tasks) {
   }
 
   taskList.innerHTML = tasks.map(task => `
-    <div class="task-card">
+    <div class="task-card" data-id="${task.id}">
       <h3>${escapeHtml(task.title)}</h3>
       ${task.description ? `<p>${escapeHtml(task.description)}</p>` : ''}
       <div class="task-meta">
@@ -46,6 +46,56 @@ function renderTasks(tasks) {
       </div>
     </div>
   `).join('');
+
+  taskList.querySelectorAll('.task-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const id = card.dataset.id;
+      const task = tasks.find(t => t.id == id);
+      openEditForm(card, task);
+    });
+  });
+}
+
+function openEditForm(card, task) {
+  if (card.classList.contains('editing')) return;
+  card.classList.add('editing');
+
+  card.innerHTML = `
+    <div class="edit-form">
+      <h3 class="edit-title">${escapeHtml(task.title)}</h3>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea class="edit-description" rows="2">${escapeHtml(task.description || '')}</textarea>
+      </div>
+      <div class="edit-row">
+        <div class="form-group">
+          <label>Due Date</label>
+          <input type="date" class="edit-due-date" value="${task.due_date || ''}">
+        </div>
+        <div class="edit-actions">
+          <button class="btn-save">Save</button>
+          <button class="btn-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  card.querySelector('.btn-save').addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const description = card.querySelector('.edit-description').value;
+    const due_date = card.querySelector('.edit-due-date').value;
+    const res = await fetch(`/api/tasks/${task.id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ description, due_date })
+    });
+    if (res.ok) loadTasks();
+  });
+
+  card.querySelector('.btn-cancel').addEventListener('click', (e) => {
+    e.stopPropagation();
+    loadTasks();
+  });
 }
 
 function escapeHtml(text) {
