@@ -32,15 +32,17 @@ app.get('/api/tasks', (req, res) => {
     tasks = db.prepare('SELECT * FROM tasks WHERE due_date IS NULL ORDER BY created_at DESC').all();
   } else if (view === 'week') {
     const now = new Date();
-    const day = now.getDay();
-    const diffToMonday = (day === 0 ? -6 : 1) - day;
-    const monday = new Date(now);
-    monday.setDate(now.getDate() + diffToMonday);
-    const sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6);
+    const day = now.getDay(); // 0 = Sunday
+    const sunday = new Date(now);
+    sunday.setDate(now.getDate() - day);
+    const saturday = new Date(sunday);
+    saturday.setDate(sunday.getDate() + 6);
 
     const fmt = d => d.toISOString().split('T')[0];
-    tasks = db.prepare('SELECT * FROM tasks WHERE due_date >= ? AND due_date <= ? ORDER BY due_date ASC, created_at DESC').all(fmt(monday), fmt(sunday));
+    tasks = db.prepare('SELECT * FROM tasks WHERE due_date >= ? AND due_date <= ? ORDER BY due_date ASC, created_at DESC').all(fmt(sunday), fmt(saturday));
+  } else if (view === 'overdue') {
+    const today = new Date().toISOString().split('T')[0];
+    tasks = db.prepare('SELECT * FROM tasks WHERE due_date < ? ORDER BY due_date ASC, created_at DESC').all(today);
   } else {
     tasks = db.prepare('SELECT * FROM tasks ORDER BY created_at DESC').all();
   }
