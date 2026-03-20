@@ -25,7 +25,26 @@ db.exec(`
 
 // API routes
 app.get('/api/tasks', (req, res) => {
-  const tasks = db.prepare('SELECT * FROM tasks ORDER BY created_at DESC').all();
+  const { view } = req.query;
+
+  let tasks;
+  if (view === 'inbox') {
+    tasks = db.prepare('SELECT * FROM tasks WHERE due_date IS NULL ORDER BY created_at DESC').all();
+  } else if (view === 'week') {
+    const now = new Date();
+    const day = now.getDay();
+    const diffToMonday = (day === 0 ? -6 : 1) - day;
+    const monday = new Date(now);
+    monday.setDate(now.getDate() + diffToMonday);
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+
+    const fmt = d => d.toISOString().split('T')[0];
+    tasks = db.prepare('SELECT * FROM tasks WHERE due_date >= ? AND due_date <= ? ORDER BY due_date ASC, created_at DESC').all(fmt(monday), fmt(sunday));
+  } else {
+    tasks = db.prepare('SELECT * FROM tasks ORDER BY created_at DESC').all();
+  }
+
   res.json(tasks);
 });
 

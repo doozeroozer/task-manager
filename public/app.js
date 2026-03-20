@@ -1,11 +1,21 @@
 const form = document.getElementById('task-form');
 const taskList = document.getElementById('task-list');
+let currentView = 'inbox';
 
 async function loadTasks() {
-  const res = await fetch('/api/tasks');
+  const res = await fetch(`/api/tasks?view=${currentView}`);
   const tasks = await res.json();
   renderTasks(tasks);
 }
+
+document.querySelector('.tab-bar').addEventListener('click', (e) => {
+  const tab = e.target.closest('.tab');
+  if (!tab) return;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  tab.classList.add('active');
+  currentView = tab.dataset.view;
+  loadTasks();
+});
 
 function formatDate(dateStr) {
   if (!dateStr) return null;

@@ -95,6 +95,39 @@ button[type="submit"]:hover {
   background: #3b5de7;
 }
 
+.tab-bar {
+  display: flex;
+  gap: 0;
+  margin-bottom: 1rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.tab {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+  font-family: inherit;
+}
+
+.tab:hover {
+  color: #555;
+  background: #f5f6f8;
+}
+
+.tab.active {
+  color: #4a6cf7;
+  background: #eef1fe;
+}
+
 .task-list {
   display: flex;
   flex-direction: column;
