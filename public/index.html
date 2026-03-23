@@ -26,6 +26,54 @@
         </div>
         <button type="submit">Add Task</button>
       </div>
+
+      <div class="form-group recurring-toggle">
+        <label class="toggle-label">
+          <input type="checkbox" id="recurring-toggle">
+          <span class="toggle-switch"></span>
+          Recurring
+        </label>
+      </div>
+      <div id="recurrence-options" class="recurrence-options hidden">
+        <div class="form-group">
+          <label>Recurrence Type</label>
+          <div class="recurrence-type-buttons">
+            <button type="button" class="rec-type-btn active" data-type="weekly">Weekly</button>
+            <button type="button" class="rec-type-btn" data-type="monthly">Monthly</button>
+            <button type="button" class="rec-type-btn" data-type="quarterly">Quarterly</button>
+          </div>
+        </div>
+        <div id="rec-weekly" class="rec-config">
+          <label>Repeat on</label>
+          <div class="weekday-checkboxes">
+            <label><input type="checkbox" value="1"> Mon</label>
+            <label><input type="checkbox" value="2"> Tue</label>
+            <label><input type="checkbox" value="3"> Wed</label>
+            <label><input type="checkbox" value="4"> Thu</label>
+            <label><input type="checkbox" value="5"> Fri</label>
+            <label><input type="checkbox" value="6"> Sat</label>
+            <label><input type="checkbox" value="0"> Sun</label>
+          </div>
+        </div>
+        <div id="rec-monthly" class="rec-config hidden">
+          <label>Day of month</label>
+          <select id="monthly-option">
+            <option value="first">1st of the month</option>
+            <option value="last">Last day of the month</option>
+            <optgroup label="Specific day">
+            </optgroup>
+          </select>
+        </div>
+        <div id="rec-quarterly" class="rec-config hidden">
+          <label>Day of quarter start</label>
+          <select id="quarterly-option">
+            <option value="first">1st of the month</option>
+            <option value="last">Last day of the month</option>
+            <optgroup label="Specific day">
+            </optgroup>
+          </select>
+        </div>
+      </div>
     </form>
 
     <div class="tab-bar">
