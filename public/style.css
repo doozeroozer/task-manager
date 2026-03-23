@@ -1,3 +1,48 @@
+:root {
+  /* Colors */
+  --color-primary: #4a6cf7;
+  --color-primary-hover: #3b5de7;
+  --color-primary-light: #eef1fe;
+  --color-bg: #f0f2f5;
+  --color-surface: #fff;
+  --color-text: #1a1a2e;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+  --color-border: #e2e8f0;
+  --color-border-light: #f1f5f9;
+  --color-danger: #ef4444;
+  --color-danger-light: #fef2f2;
+  --color-danger-border: #fecaca;
+  --color-success: #2e7d32;
+  --color-success-light: #e8f5e9;
+  --color-header-bg: #1a1a2e;
+  --color-header-text: #fff;
+
+  /* Spacing (4px base) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+  --transition-slow: 300ms ease;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,71 +51,87 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #f0f2f5;
-  color: #1a1a2e;
+  background: var(--color-bg);
+  color: var(--color-text);
   min-height: 100vh;
-  padding: 2rem 1rem;
+  padding: var(--space-8) var(--space-4);
+  font-size: 0.9375rem;
 }
 
 .container {
-  max-width: 640px;
+  max-width: 680px;
   margin: 0 auto;
 }
 
-h1 {
-  font-size: 1.75rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-  color: #1a1a2e;
+/* ── App Header ── */
+.app-header {
+  background: var(--color-header-bg);
+  margin: calc(-1 * var(--space-8)) calc(-1 * var(--space-4)) var(--space-6);
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
 }
 
+.app-header h1 {
+  color: var(--color-header-text);
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 0;
+}
+
+/* ── Task Form ── */
 .task-form {
-  background: #fff;
-  border-radius: 12px;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  margin-bottom: 2rem;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+  margin-bottom: var(--space-6);
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-3);
 }
 
 .form-group label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  margin-bottom: 0.35rem;
-  color: #555;
+  margin-bottom: var(--space-1);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .required {
-  color: #e74c3c;
+  color: var(--color-danger);
 }
 
 .form-group input[type="text"],
 .form-group textarea,
 .form-group input[type="date"] {
   width: 100%;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
   font-family: inherit;
-  transition: border-color 0.2s;
+  background: var(--color-bg);
+  transition: all var(--transition-normal);
 }
 
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #4a6cf7;
+  background: var(--color-surface);
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
 }
 
 .form-row {
   display: flex;
   align-items: flex-end;
-  gap: 1rem;
+  gap: var(--space-3);
 }
 
 .form-row .form-group {
@@ -78,73 +139,146 @@ h1 {
   margin-bottom: 0;
 }
 
+/* ── Buttons ── */
 button[type="submit"] {
-  padding: 0.6rem 1.5rem;
-  background: #4a6cf7;
+  padding: 0.6rem 1.75rem;
+  background: var(--color-primary);
   color: #fff;
   border: none;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.2s;
+  font-family: inherit;
+  box-shadow: 0 1px 2px rgba(74, 108, 247, 0.3);
+  transition: all var(--transition-fast);
 }
 
 button[type="submit"]:hover {
-  background: #3b5de7;
+  background: var(--color-primary-hover);
+  box-shadow: 0 2px 6px rgba(74, 108, 247, 0.4);
 }
 
+button[type="submit"]:active {
+  transform: scale(0.97);
+}
+
+.btn-save, .btn-cancel {
+  padding: 0.55rem 1.25rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all var(--transition-fast);
+}
+
+.btn-save {
+  background: var(--color-primary);
+  color: #fff;
+  box-shadow: 0 1px 2px rgba(74, 108, 247, 0.3);
+}
+
+.btn-save:hover {
+  background: var(--color-primary-hover);
+  box-shadow: 0 2px 6px rgba(74, 108, 247, 0.4);
+}
+
+.btn-save:active {
+  transform: scale(0.97);
+}
+
+.btn-cancel {
+  background: var(--color-border-light);
+  color: var(--color-text-secondary);
+}
+
+.btn-cancel:hover {
+  background: var(--color-border);
+}
+
+.btn-cancel:active {
+  transform: scale(0.97);
+}
+
+/* ── Tab Bar ── */
 .tab-bar {
   display: flex;
   gap: 0;
-  margin-bottom: 1rem;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-bottom: var(--space-3);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   overflow: hidden;
 }
 
 .tab {
   flex: 1;
-  padding: 0.65rem 1rem;
+  padding: 0.7rem 1rem;
   border: none;
   background: transparent;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 600;
-  color: #999;
+  color: var(--color-text-muted);
   cursor: pointer;
-  transition: color 0.2s, background 0.2s;
   font-family: inherit;
+  position: relative;
+  transition: color var(--transition-normal);
+}
+
+.tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2.5px;
+  background: var(--color-primary);
+  border-radius: 2px;
+  transition: width var(--transition-normal), left var(--transition-normal);
 }
 
 .tab:hover {
-  color: #555;
-  background: #f5f6f8;
+  color: var(--color-text-secondary);
 }
 
 .tab.active {
-  color: #4a6cf7;
-  background: #eef1fe;
+  color: var(--color-primary);
 }
 
+.tab.active::after {
+  width: 60%;
+  left: 20%;
+}
+
+/* ── Task List ── */
 .task-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: var(--space-3);
+}
+
+/* ── Task Card ── */
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .task-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 1.25rem 1.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+  box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: box-shadow 0.2s;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  animation: cardIn var(--transition-normal) ease;
 }
 
 .task-card:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .task-card.editing {
@@ -152,50 +286,157 @@ button[type="submit"]:hover {
 }
 
 .task-card.editing:hover {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  transform: none;
+  box-shadow: var(--shadow-sm);
 }
 
-.edit-title {
-  font-size: 1.05rem;
+/* Completion animation */
+@keyframes taskComplete {
+  0% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.98); }
+  100% { opacity: 0; transform: scale(0.95) translateX(20px); }
+}
+
+.task-card.completing {
+  animation: taskComplete 300ms ease forwards;
+  pointer-events: none;
+}
+
+/* Overdue task card */
+.task-card.task-overdue {
+  border-left: 3px solid var(--color-danger);
+}
+
+/* ── Task Card Interior ── */
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.task-card h3 {
+  font-size: 1rem;
+  font-weight: 650;
+  margin-bottom: var(--space-1);
+  letter-spacing: -0.01em;
+}
+
+.task-header h3 {
+  margin-bottom: var(--space-1);
+}
+
+.task-card p {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-3);
+  line-height: 1.5;
+}
+
+.task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border-light);
+  margin-top: var(--space-2);
+}
+
+.due-date-overdue {
+  color: var(--color-danger) !important;
   font-weight: 600;
-  margin-bottom: 0.75rem;
-  color: #1a1a2e;
+}
+
+.overdue-badge {
+  background: var(--color-danger-light);
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger-border);
+  padding: 0.1rem 0.4rem;
+  border-radius: 999px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.btn-complete {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border);
+  background: transparent;
+  color: transparent;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+
+.btn-complete:hover {
+  border-color: var(--color-success);
+  color: var(--color-success);
+  background: var(--color-success-light);
+  transform: scale(1.1);
+}
+
+.empty-state {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: 3rem 1rem;
+  font-size: 0.9375rem;
+}
+
+/* ── Edit Form ── */
+.edit-title {
+  font-size: 1rem;
+  font-weight: 650;
+  margin-bottom: var(--space-3);
+  color: var(--color-text);
 }
 
 .edit-form .form-group {
-  margin-bottom: 0.75rem;
+  margin-bottom: var(--space-3);
 }
 
 .edit-form .form-group label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  margin-bottom: 0.35rem;
-  color: #555;
+  margin-bottom: var(--space-1);
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
 .edit-form textarea,
 .edit-form input[type="date"] {
   width: 100%;
-  padding: 0.6rem 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
   font-family: inherit;
-  transition: border-color 0.2s;
+  background: var(--color-bg);
+  transition: all var(--transition-normal);
 }
 
 .edit-form textarea:focus,
 .edit-form input[type="date"]:focus {
   outline: none;
-  border-color: #4a6cf7;
+  background: var(--color-surface);
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
 }
 
 .edit-row {
   display: flex;
   align-items: flex-end;
-  gap: 1rem;
+  gap: var(--space-3);
 }
 
 .edit-row .form-group {
@@ -205,111 +446,22 @@ button[type="submit"]:hover {
 
 .edit-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
-.btn-save, .btn-cancel {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  cursor: pointer;
-  font-family: inherit;
-}
-
-.btn-save {
-  background: #4a6cf7;
-  color: #fff;
-}
-
-.btn-save:hover {
-  background: #3b5de7;
-}
-
-.btn-cancel {
-  background: #e8e8e8;
-  color: #555;
-}
-
-.btn-cancel:hover {
-  background: #ddd;
-}
-
-.task-card h3 {
-  font-size: 1.05rem;
-  font-weight: 600;
-  margin-bottom: 0.3rem;
-}
-
-.task-card p {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 0.5rem;
-  line-height: 1.4;
-}
-
-.task-meta {
-  display: flex;
-  gap: 1rem;
-  font-size: 0.8rem;
-  color: #999;
-}
-
-.empty-state {
-  text-align: center;
-  color: #999;
-  padding: 3rem 1rem;
-  font-size: 0.95rem;
-}
-
-/* Task header with complete button */
-.task-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 0.5rem;
-}
-
-.task-header h3 {
-  margin-bottom: 0.3rem;
-}
-
-.btn-complete {
-  flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 2px solid #ccc;
-  background: transparent;
-  color: transparent;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s;
-}
-
-.btn-complete:hover {
-  border-color: #4a6cf7;
-  color: #4a6cf7;
-  background: #eef1fe;
-}
-
-/* Recurring toggle */
+/* ── Recurring Toggle ── */
 .recurring-toggle {
-  margin-top: 1rem;
+  margin-top: var(--space-4);
   margin-bottom: 0;
 }
 
 .toggle-label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
+  gap: var(--space-2);
+  font-size: 0.85rem;
   font-weight: 600;
-  color: #555;
+  color: var(--color-text-secondary);
   cursor: pointer;
 }
 
@@ -323,10 +475,10 @@ button[type="submit"]:hover {
   width: 36px;
   min-width: 36px;
   height: 20px;
-  background: #ccc;
+  background: var(--color-border);
   border-radius: 10px;
   position: relative;
-  transition: background 0.2s;
+  transition: background var(--transition-normal);
 }
 
 .toggle-switch::after {
@@ -338,28 +490,38 @@ button[type="submit"]:hover {
   height: 16px;
   background: #fff;
   border-radius: 50%;
-  transition: transform 0.2s;
+  transition: transform var(--transition-normal);
+  box-shadow: var(--shadow-sm);
 }
 
 .toggle-label input:checked + .toggle-switch {
-  background: #4a6cf7;
+  background: var(--color-primary);
 }
 
 .toggle-label input:checked + .toggle-switch::after {
   transform: translateX(16px);
 }
 
-/* Recurrence options */
+/* ── Recurrence Options ── */
 .recurrence-options {
-  margin-top: 0.75rem;
-  padding: 1rem;
-  background: #f8f9fb;
-  border-radius: 8px;
-  border: 1px solid #e8e8e8;
+  margin-top: var(--space-3);
+  padding: var(--space-4);
+  background: var(--color-border-light);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  max-height: 500px;
+  opacity: 1;
+  transition: max-height var(--transition-slow), opacity var(--transition-normal), margin var(--transition-normal), padding var(--transition-normal);
 }
 
 .recurrence-options.hidden {
-  display: none;
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  border-color: transparent;
 }
 
 .hidden {
@@ -369,48 +531,48 @@ button[type="submit"]:hover {
 .recurrence-type-buttons {
   display: flex;
   gap: 0;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border);
 }
 
 .rec-type-btn {
   flex: 1;
   padding: 0.45rem 0.75rem;
   border: none;
-  background: #fff;
-  font-size: 0.85rem;
+  background: var(--color-surface);
+  font-size: 0.8rem;
   font-weight: 600;
-  color: #999;
+  color: var(--color-text-muted);
   cursor: pointer;
   font-family: inherit;
-  transition: all 0.2s;
+  transition: all var(--transition-fast);
 }
 
 .rec-type-btn:not(:last-child) {
-  border-right: 1px solid #ddd;
+  border-right: 1px solid var(--color-border);
 }
 
 .rec-type-btn.active {
-  background: #eef1fe;
-  color: #4a6cf7;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
 }
 
 .rec-type-btn:hover:not(.active) {
-  background: #f5f6f8;
-  color: #555;
+  background: var(--color-border-light);
+  color: var(--color-text-secondary);
 }
 
 .rec-config {
-  margin-top: 0.75rem;
+  margin-top: var(--space-3);
 }
 
 .rec-config > label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
-  color: #555;
-  margin-bottom: 0.35rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-1);
 }
 
 .weekday-checkboxes {
@@ -424,21 +586,21 @@ button[type="submit"]:hover {
   align-items: center;
   gap: 0.25rem;
   padding: 0.35rem 0.6rem;
-  font-size: 0.85rem;
-  color: #555;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
   cursor: pointer;
-  border: 1px solid #ddd;
+  border: 1px solid var(--color-border);
   margin-right: -1px;
-  background: #fff;
-  transition: all 0.15s;
+  background: var(--color-surface);
+  transition: all var(--transition-fast);
 }
 
 .weekday-checkboxes label:first-child {
-  border-radius: 6px 0 0 6px;
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
 }
 
 .weekday-checkboxes label:last-child {
-  border-radius: 0 6px 6px 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   margin-right: 0;
 }
 
@@ -447,58 +609,59 @@ button[type="submit"]:hover {
 }
 
 .weekday-checkboxes label:has(input:checked) {
-  background: #eef1fe;
-  color: #4a6cf7;
-  border-color: #4a6cf7;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
   z-index: 1;
 }
 
 .recurrence-options select {
   width: 100%;
   padding: 0.5rem 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
   font-family: inherit;
-  background: #fff;
+  background: var(--color-surface);
+  transition: all var(--transition-normal);
 }
 
 .recurrence-options select:focus {
   outline: none;
-  border-color: #4a6cf7;
+  border-color: var(--color-primary);
   box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
 }
 
-/* Recurrence badge on task card */
+/* ── Badges (pill-shaped) ── */
 .recurrence-badge {
-  background: #eef1fe;
-  color: #4a6cf7;
-  padding: 0.1rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
+  background: var(--color-primary-light);
+  color: var(--color-primary);
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
   font-weight: 600;
 }
 
-/* Label badges on task cards */
+/* ── Label Badges ── */
 .task-labels {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
-  margin-bottom: 0.5rem;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
   align-items: center;
 }
 
 .label-badge {
-  background: #e8f5e9;
-  color: #2e7d32;
-  padding: 0.1rem 0.5rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
+  background: var(--color-success-light);
+  color: var(--color-success);
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
   font-weight: 600;
   cursor: pointer;
   border: none;
   font-family: inherit;
-  transition: background 0.15s;
+  transition: all var(--transition-fast);
 }
 
 .label-badge:hover {
@@ -507,40 +670,46 @@ button[type="submit"]:hover {
 
 .btn-add-label {
   background: none;
-  border: 1px dashed #ccc;
-  border-radius: 4px;
-  padding: 0.1rem 0.5rem;
-  font-size: 0.75rem;
-  color: #999;
+  border: 1px dashed var(--color-border);
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+  font-size: 0.7rem;
+  color: var(--color-text-muted);
   cursor: pointer;
   font-family: inherit;
-  transition: all 0.15s;
+  transition: all var(--transition-fast);
 }
 
 .btn-add-label:hover {
-  border-color: #4a6cf7;
-  color: #4a6cf7;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
 }
 
-/* Label popover */
+/* ── Label Popover ── */
+@keyframes popoverIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .label-popover {
   position: fixed;
   width: 240px;
   max-height: 280px;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
   z-index: 1000;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  animation: popoverIn var(--transition-slow) ease;
 }
 
 .label-search {
   padding: 0.6rem 0.75rem;
   border: none;
-  border-bottom: 1px solid #eee;
-  font-size: 0.9rem;
+  border-bottom: 1px solid var(--color-border-light);
+  font-size: 0.875rem;
   font-family: inherit;
   outline: none;
 }
@@ -557,16 +726,16 @@ button[type="submit"]:hover {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: background 0.1s;
+  transition: background var(--transition-fast);
 }
 
 .label-list-item:hover {
-  background: #f5f6f8;
+  background: var(--color-border-light);
 }
 
 .label-list-item.assigned {
-  background: #e8f5e9;
-  color: #2e7d32;
+  background: var(--color-success-light);
+  color: var(--color-success);
 }
 
 .label-list-item.assigned::after {
@@ -576,22 +745,22 @@ button[type="submit"]:hover {
 
 .label-list-empty {
   padding: 0.5rem 0.75rem;
-  font-size: 0.8rem;
-  color: #999;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
   font-style: italic;
 }
 
-/* Label filter bar */
+/* ── Label Filter Bar ── */
 .label-filter {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  margin-bottom: 0.75rem;
-  background: #e8f5e9;
-  border-radius: 8px;
-  font-size: 0.85rem;
-  color: #2e7d32;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-3);
+  background: var(--color-success-light);
+  border-radius: var(--radius-md);
+  font-size: 0.8rem;
+  color: var(--color-success);
   font-weight: 600;
 }
 
@@ -608,22 +777,23 @@ button[type="submit"]:hover {
   border: none;
   cursor: pointer;
   font-size: 1rem;
-  color: #999;
-  padding: 0 0.25rem;
+  color: var(--color-text-muted);
+  padding: 0 var(--space-1);
   line-height: 1;
   font-family: inherit;
+  transition: color var(--transition-fast);
 }
 
 .label-filter-clear:hover {
-  color: #e74c3c;
+  color: var(--color-danger);
 }
 
-/* Top labels bar */
+/* ── Top Labels Bar ── */
 .top-labels {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
-  margin-bottom: 0.75rem;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
 }
 
 .top-labels:empty {
@@ -631,26 +801,84 @@ button[type="submit"]:hover {
 }
 
 .top-label-btn {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  padding: 0.3rem 0.7rem;
-  font-size: 0.8rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.78rem;
   font-weight: 600;
-  color: #555;
+  color: var(--color-text-secondary);
   cursor: pointer;
   font-family: inherit;
-  transition: all 0.15s;
+  transition: all var(--transition-fast);
 }
 
 .top-label-btn:hover {
-  border-color: #2e7d32;
-  color: #2e7d32;
+  border-color: var(--color-success);
+  color: var(--color-success);
   background: #f1f8e9;
 }
 
 .top-label-btn.active {
-  background: #e8f5e9;
-  border-color: #2e7d32;
-  color: #2e7d32;
+  background: var(--color-success-light);
+  border-color: var(--color-success);
+  color: var(--color-success);
+}
+
+/* ── Mobile Responsive ── */
+@media (max-width: 480px) {
+  body {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .app-header {
+    margin: calc(-1 * var(--space-4)) calc(-1 * var(--space-3)) var(--space-6);
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+
+  .task-card {
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .task-form {
+    padding: var(--space-4);
+  }
+
+  .form-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .edit-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .edit-actions {
+    justify-content: flex-end;
+    margin-top: var(--space-2);
+  }
+
+  .tab-bar {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tab {
+    white-space: nowrap;
+    min-width: fit-content;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.78rem;
+  }
+
+  .label-popover {
+    width: calc(100vw - 32px);
+    left: 16px !important;
+    max-width: 320px;
+  }
+
+  .task-meta {
+    gap: var(--space-2);
+  }
 }

@@ -126,7 +126,7 @@ app.get('/api/tasks', (req, res) => {
     const today = new Date().toISOString().split('T')[0];
     tasks = db.prepare(`SELECT tasks.* FROM tasks ${labelJoin} WHERE due_date < ? AND completed = 0 ${labelWhere} ORDER BY due_date ASC, created_at DESC`).all(today, ...labelParams);
   } else {
-    tasks = db.prepare(`SELECT tasks.* FROM tasks ${labelJoin} WHERE completed = 0 ${labelWhere} ORDER BY created_at DESC`).all(...labelParams);
+    tasks = db.prepare(`SELECT tasks.* FROM tasks ${labelJoin} WHERE completed = 0 ${labelWhere} ORDER BY CASE WHEN due_date IS NULL THEN 1 ELSE 0 END, due_date ASC, created_at DESC`).all(...labelParams);
   }
 
   res.json(attachLabels(tasks));

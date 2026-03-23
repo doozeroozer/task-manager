@@ -123,8 +123,12 @@ function renderTasks(tasks) {
     return;
   }
 
-  taskList.innerHTML = tasks.map(task => `
-    <div class="task-card" data-id="${task.id}">
+  const today = new Date().toISOString().split('T')[0];
+
+  taskList.innerHTML = tasks.map(task => {
+    const isOverdue = task.due_date && task.due_date < today;
+    return `
+    <div class="task-card${isOverdue ? ' task-overdue' : ''}" data-id="${task.id}">
       <div class="task-header">
         <h3>${escapeHtml(task.title)}</h3>
         <button class="btn-complete" title="Complete task">&#10003;</button>
@@ -135,20 +139,22 @@ function renderTasks(tasks) {
         <button class="btn-add-label">+ Label</button>
       </div>
       <div class="task-meta">
-        ${task.due_date ? `<span>Due: ${formatDate(task.due_date)}</span>` : ''}
+        ${task.due_date ? `<span class="${isOverdue ? 'due-date-overdue' : ''}">Due: ${formatDate(task.due_date)}</span>` : ''}
+        ${isOverdue ? '<span class="overdue-badge">Overdue</span>' : ''}
         ${task.recurrence_type ? `<span class="recurrence-badge">${escapeHtml(recurrenceLabel(task))}</span>` : ''}
         <span>Created: ${formatTimestamp(task.created_at)}</span>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 
   taskList.querySelectorAll('.btn-complete').forEach(btn => {
     btn.addEventListener('click', async (e) => {
       e.stopPropagation();
       const card = btn.closest('.task-card');
       const id = card.dataset.id;
+      card.classList.add('completing');
       await fetch(`/api/tasks/${id}/complete`, { method: 'POST' });
-      loadTasks();
+      setTimeout(() => { refreshTopLabels(); loadTasks(); }, 300);
     });
   });
 
