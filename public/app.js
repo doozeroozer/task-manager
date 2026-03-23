@@ -1,6 +1,45 @@
 const form = document.getElementById('task-form');
 const taskList = document.getElementById('task-list');
 let currentView = 'inbox';
+let currentLabelFilter = null;
+
+// Label filter bar elements
+const labelFilterEl = document.getElementById('label-filter');
+const labelFilterName = labelFilterEl.querySelector('.label-filter-name');
+const topLabelsEl = document.getElementById('top-labels');
+labelFilterEl.querySelector('.label-filter-clear').addEventListener('click', () => {
+  currentLabelFilter = null;
+  labelFilterEl.classList.add('hidden');
+  refreshTopLabels();
+  loadTasks();
+});
+
+async function refreshTopLabels() {
+  const res = await fetch('/api/labels/top');
+  const labels = await res.json();
+  if (!labels.length) {
+    topLabelsEl.innerHTML = '';
+    return;
+  }
+  topLabelsEl.innerHTML = labels.map(l =>
+    `<button class="top-label-btn ${currentLabelFilter == l.id ? 'active' : ''}" data-label-id="${l.id}" data-label-name="${escapeHtml(l.name)}">${escapeHtml(l.name)}</button>`
+  ).join('');
+  topLabelsEl.querySelectorAll('.top-label-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.labelId;
+      if (currentLabelFilter == id) {
+        currentLabelFilter = null;
+        labelFilterEl.classList.add('hidden');
+      } else {
+        currentLabelFilter = id;
+        labelFilterName.textContent = btn.dataset.labelName;
+        labelFilterEl.classList.remove('hidden');
+      }
+      refreshTopLabels();
+      loadTasks();
+    });
+  });
+}
 
 // Populate day selects for monthly/quarterly
 ['monthly-option', 'quarterly-option'].forEach(selId => {
@@ -34,7 +73,9 @@ document.querySelector('.recurrence-type-buttons').addEventListener('click', (e)
 });
 
 async function loadTasks() {
-  const res = await fetch(`/api/tasks?view=${currentView}`);
+  let url = `/api/tasks?view=${currentView}`;
+  if (currentLabelFilter) url += `&label=${currentLabelFilter}`;
+  const res = await fetch(url);
   const tasks = await res.json();
   renderTasks(tasks);
 }
@@ -89,6 +130,10 @@ function renderTasks(tasks) {
         <button class="btn-complete" title="Complete task">&#10003;</button>
       </div>
       ${task.description ? `<p>${escapeHtml(task.description)}</p>` : ''}
+      <div class="task-labels">
+        ${(task.labels || []).map(l => `<button class="label-badge" data-label-id="${l.id}" data-label-name="${escapeHtml(l.name)}">${escapeHtml(l.name)}</button>`).join('')}
+        <button class="btn-add-label">+ Label</button>
+      </div>
       <div class="task-meta">
         ${task.due_date ? `<span>Due: ${formatDate(task.due_date)}</span>` : ''}
         ${task.recurrence_type ? `<span class="recurrence-badge">${escapeHtml(recurrenceLabel(task))}</span>` : ''}
@@ -107,6 +152,28 @@ function renderTasks(tasks) {
     });
   });
 
+  // Label badge click -> filter by label
+  taskList.querySelectorAll('.label-badge').forEach(badge => {
+    badge.addEventListener('click', (e) => {
+      e.stopPropagation();
+      currentLabelFilter = badge.dataset.labelId;
+      labelFilterName.textContent = badge.dataset.labelName;
+      labelFilterEl.classList.remove('hidden');
+      loadTasks();
+    });
+  });
+
+  // + Label button -> open popover
+  taskList.querySelectorAll('.btn-add-label').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest('.task-card');
+      const id = card.dataset.id;
+      const task = tasks.find(t => t.id == id);
+      openLabelPopover(btn, id, task.labels || []);
+    });
+  });
+
   taskList.querySelectorAll('.task-card').forEach(card => {
     card.addEventListener('click', () => {
       const id = card.dataset.id;
@@ -114,6 +181,133 @@ function renderTasks(tasks) {
       openEditForm(card, task);
     });
   });
+}
+
+// Label popover
+function openLabelPopover(anchorBtn, taskId, currentLabels) {
+  // Close any existing popover
+  const existing = document.querySelector('.label-popover');
+  if (existing) existing.remove();
+
+  const popover = document.createElement('div');
+  popover.className = 'label-popover';
+  popover.innerHTML = `
+    <input type="text" class="label-search" placeholder="Search or create label...">
+    <div class="label-list"></div>
+  `;
+  document.body.appendChild(popover);
+
+  const rect = anchorBtn.getBoundingClientRect();
+  popover.style.top = (rect.bottom + 4) + 'px';
+  popover.style.left = rect.left + 'px';
+
+  // Adjust if overflowing right
+  if (rect.left + 240 > window.innerWidth) {
+    popover.style.left = (window.innerWidth - 248) + 'px';
+  }
+  // Adjust if overflowing bottom
+  if (rect.bottom + 284 > window.innerHeight) {
+    popover.style.top = (rect.top - 284) + 'px';
+  }
+
+  const searchInput = popover.querySelector('.label-search');
+  const labelList = popover.querySelector('.label-list');
+  let allLabels = [];
+  const assignedIds = new Set(currentLabels.map(l => l.id));
+
+  async function fetchAndRender() {
+    const res = await fetch('/api/labels');
+    allLabels = await res.json();
+    renderList('');
+  }
+
+  function renderList(query) {
+    const q = query.toLowerCase();
+    const filtered = q ? allLabels.filter(l => l.name.toLowerCase().includes(q)) : allLabels;
+
+    if (filtered.length === 0 && !q) {
+      labelList.innerHTML = '<div class="label-list-empty">No labels yet. Type to create one.</div>';
+      return;
+    }
+
+    if (filtered.length === 0) {
+      labelList.innerHTML = `<div class="label-list-empty">Press Enter to create "${escapeHtml(query)}"</div>`;
+      return;
+    }
+
+    labelList.innerHTML = filtered.map(l =>
+      `<div class="label-list-item ${assignedIds.has(l.id) ? 'assigned' : ''}" data-id="${l.id}" data-name="${escapeHtml(l.name)}">${escapeHtml(l.name)}</div>`
+    ).join('');
+
+    labelList.querySelectorAll('.label-list-item').forEach(item => {
+      item.addEventListener('click', async () => {
+        const labelId = parseInt(item.dataset.id);
+        if (assignedIds.has(labelId)) {
+          await fetch(`/api/tasks/${taskId}/labels/${labelId}`, { method: 'DELETE' });
+          assignedIds.delete(labelId);
+        } else {
+          await fetch(`/api/tasks/${taskId}/labels`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: item.dataset.name })
+          });
+          assignedIds.add(labelId);
+        }
+        item.classList.toggle('assigned');
+      });
+    });
+  }
+
+  searchInput.addEventListener('input', () => renderList(searchInput.value));
+
+  searchInput.addEventListener('keydown', async (e) => {
+    if (e.key !== 'Enter') return;
+    const val = searchInput.value.trim();
+    if (!val) return;
+
+    const match = allLabels.find(l => l.name.toLowerCase() === val.toLowerCase());
+    if (match) {
+      // Toggle existing label
+      if (assignedIds.has(match.id)) {
+        await fetch(`/api/tasks/${taskId}/labels/${match.id}`, { method: 'DELETE' });
+        assignedIds.delete(match.id);
+      } else {
+        await fetch(`/api/tasks/${taskId}/labels`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: val })
+        });
+        assignedIds.add(match.id);
+      }
+    } else {
+      // Create new label and assign
+      const res = await fetch(`/api/tasks/${taskId}/labels`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: val })
+      });
+      const label = await res.json();
+      allLabels.push(label);
+      assignedIds.add(label.id);
+    }
+
+    searchInput.value = '';
+    renderList('');
+  });
+
+  // Close on click outside
+  function onClickOutside(e) {
+    if (!popover.contains(e.target) && e.target !== anchorBtn) {
+      popover.remove();
+      document.removeEventListener('mousedown', onClickOutside);
+      refreshTopLabels();
+      loadTasks();
+    }
+  }
+  setTimeout(() => document.addEventListener('mousedown', onClickOutside), 0);
+
+  searchInput.focus();
+  fetchAndRender();
 }
 
 function buildRecurrenceEditor(prefix, task) {
@@ -281,4 +475,5 @@ form.addEventListener('submit', async (e) => {
   }
 });
 
+refreshTopLabels();
 loadTasks();

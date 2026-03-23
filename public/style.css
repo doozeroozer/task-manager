@@ -478,3 +478,179 @@ button[type="submit"]:hover {
   font-size: 0.75rem;
   font-weight: 600;
 }
+
+/* Label badges on task cards */
+.task-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+
+.label-badge {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 0.1rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.label-badge:hover {
+  background: #c8e6c9;
+}
+
+.btn-add-label {
+  background: none;
+  border: 1px dashed #ccc;
+  border-radius: 4px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.75rem;
+  color: #999;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.btn-add-label:hover {
+  border-color: #4a6cf7;
+  color: #4a6cf7;
+}
+
+/* Label popover */
+.label-popover {
+  position: fixed;
+  width: 240px;
+  max-height: 280px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.label-search {
+  padding: 0.6rem 0.75rem;
+  border: none;
+  border-bottom: 1px solid #eee;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+}
+
+.label-list {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.label-list-item {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.1s;
+}
+
+.label-list-item:hover {
+  background: #f5f6f8;
+}
+
+.label-list-item.assigned {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.label-list-item.assigned::after {
+  content: '\2713';
+  font-weight: 700;
+}
+
+.label-list-empty {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.8rem;
+  color: #999;
+  font-style: italic;
+}
+
+/* Label filter bar */
+.label-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0.75rem;
+  background: #e8f5e9;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.label-filter.hidden {
+  display: none;
+}
+
+.label-filter-name {
+  font-weight: 700;
+}
+
+.label-filter-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #999;
+  padding: 0 0.25rem;
+  line-height: 1;
+  font-family: inherit;
+}
+
+.label-filter-clear:hover {
+  color: #e74c3c;
+}
+
+/* Top labels bar */
+.top-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.75rem;
+}
+
+.top-labels:empty {
+  display: none;
+}
+
+.top-label-btn {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0.3rem 0.7rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #555;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.top-label-btn:hover {
+  border-color: #2e7d32;
+  color: #2e7d32;
+  background: #f1f8e9;
+}
+
+.top-label-btn.active {
+  background: #e8f5e9;
+  border-color: #2e7d32;
+  color: #2e7d32;
+}
