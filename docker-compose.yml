@@ -1,0 +1,12 @@
+services:
+  task-manager:
+    image: task-manager
+    platform: linux/arm64
+    container_name: task-manager
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - DB_PATH=/app/data/tasks.db
+    restart: unless-stopped
